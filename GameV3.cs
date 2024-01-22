@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.IO;  // Don't forget to add this directive
 using System.ComponentModel.Design;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Schema;
-
 public class DataStorage
 {
+    private const string PlayerDataFile = "C:\\GameDataFolder\\player_data.txt";
     public static void SaveData(string fileName, string Data)
     {
         File.WriteAllText(fileName, Data);
@@ -19,6 +21,20 @@ public class DataStorage
         else
         {
             return "File not found.";
+        }
+    }
+
+    public static void SavePlayerData(Player player)
+    {
+        SaveData(PlayerDataFile, player.username);
+    }
+
+    public static void LoadPlayerData(Player player)
+    {
+        string savedData = ReadData(PlayerDataFile);
+        if (!string.IsNullOrEmpty(savedData))
+        {
+            player.username = savedData;
         }
     }
 }
@@ -95,6 +111,8 @@ public class Program
         //class info retrieve
         Eggs eggInstance = new Eggs();
         Player player = new Player();
+        //Load Data
+        DataStorage.LoadPlayerData(player);
         //functions
         Startup(player);
     }
@@ -110,5 +128,7 @@ public class Program
     {
         Console.Write("Enter your username: ");
         player.username = Console.ReadLine();
+
+        DataStorage.SavePlayerData(player);
     }
 }
