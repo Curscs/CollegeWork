@@ -3,6 +3,25 @@ using System.ComponentModel.Design;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Schema;
 
+public class DataStorage
+{
+    public static void SaveData(string fileName, string Data)
+    {
+        File.WriteAllText(fileName, Data);
+    }
+
+    public static string ReadData(string fileName)
+    {
+        if (File.Exists(fileName))
+        {
+            return File.ReadAllText(fileName);
+        }
+        else
+        {
+            return "File not found.";
+        }
+    }
+}
 public class Player
 {
     public string username { get; set; } = "";
@@ -20,7 +39,16 @@ public class Eggs
                 {"Cat", 30.0},
                 {"Demon", 0.9}
             }
-        }
+
+        },
+        {
+            "Rare Egg", new Dictionary<string , double>
+            {
+                {"Doggy", 30.0},
+                {"Cat", 30.0},
+                {"Demon", 0.9}
+            }
+        },
     };
 
     public void OpenEgg(string eggname)
@@ -28,7 +56,7 @@ public class Eggs
         if (eggs.ContainsKey(eggname))
         {
             //retrieve data from dictionary
-            Dictionary<string , double> eggContents = eggs[eggname];
+            Dictionary<string, double> eggContents = eggs[eggname];
 
 
             //Calculate total pet chance
@@ -43,7 +71,7 @@ public class Eggs
 
             foreach (var petChance in eggContents)
             {
-                if (randomnumber <= petChance.Value) 
+                if (randomnumber <= petChance.Value)
                 {
                     Console.WriteLine($"You have got {petChance.Key}");
                     break;
@@ -64,10 +92,23 @@ public class Program
 {
     public static void Main()
     {
+        //class info retrieve
         Eggs eggInstance = new Eggs();
-        for (int i = 0; i < 100; i++) 
+        Player player = new Player();
+        //functions
+        Startup(player);
+    }
+    public static void Startup(Player player)
+    {
+        Console.WriteLine("Welcome to Console World");
+        if (player.username == "")
         {
-            eggInstance.OpenEgg("Common Egg");
+            GetUsername(player);
         }
+    }
+    public static void GetUsername(Player player)
+    {
+        Console.Write("Enter your username: ");
+        player.username = Console.ReadLine();
     }
 }
