@@ -4,44 +4,16 @@ using System.IO;  // Don't forget to add this directive
 using System.ComponentModel.Design;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Schema;
-public class DataStorage
-{
-    private const string PlayerDataFile = "C:\\GameDataFolder\\player_data.txt";
-    public static void SaveData(string fileName, string Data)
-    {
-        File.WriteAllText(fileName, Data);
-    }
-
-    public static string ReadData(string fileName)
-    {
-        if (File.Exists(fileName))
-        {
-            return File.ReadAllText(fileName);
-        }
-        else
-        {
-            return "File not found.";
-        }
-    }
-
-    public static void SavePlayerData(Player player)
-    {
-        SaveData(PlayerDataFile, player.username);
-    }
-
-    public static void LoadPlayerData(Player player)
-    {
-        string savedData = ReadData(PlayerDataFile);
-        if (!string.IsNullOrEmpty(savedData))
-        {
-            player.username = savedData;
-        }
-    }
-}
 public class Player
 {
     public string username { get; set; } = "";
     public List<string> Items { get; set; } = new List<string>();
+    public List<string> Pets { get; set; } = new List<string>();
+
+    public void AddPet(string PetName, Player player)
+    {
+        player.Pets.Add(PetName);
+    }
 }
 
 public class Eggs
@@ -67,7 +39,7 @@ public class Eggs
         },
     };
 
-    public void OpenEgg(string eggname)
+    public void OpenEgg(string eggname, Player player)
     {
         if (eggs.ContainsKey(eggname))
         {
@@ -85,15 +57,16 @@ public class Eggs
             //Generates random number and then * it by the totalchance 
             double randomnumber = new Random().NextDouble() * TotalChance;
 
-            foreach (var petChance in eggContents)
+            foreach (var Petname in eggContents)
             {
-                if (randomnumber <= petChance.Value)
+                if (randomnumber <= Petname.Value)
                 {
-                    Console.WriteLine($"You have got {petChance.Key}");
+                    player.AddPet(Petname.Key, player);
+                    Console.WriteLine($"You have hatched {Petname.Key}");
                     break;
                 }
 
-                randomnumber -= petChance.Value;
+                randomnumber -= Petname.Value;
             }
         }
         else
@@ -111,8 +84,6 @@ public class Program
         //class info retrieve
         Eggs eggInstance = new Eggs();
         Player player = new Player();
-        //Load Data
-        DataStorage.LoadPlayerData(player);
         //functions
         Startup(player);
     }
@@ -128,7 +99,5 @@ public class Program
     {
         Console.Write("Enter your username: ");
         player.username = Console.ReadLine();
-
-        DataStorage.SavePlayerData(player);
     }
 }
