@@ -16,6 +16,21 @@ public class Player
     }
 }
 
+public class Pet
+{
+    public string Name { get; set; }
+    public double Attack { get; set; }
+    public double Health { get; set; }
+
+public class Mobs
+{
+    public Dictionary<string, Dictionary<string, (Pet, int) >> mobs = new Dictionary<string, Dictionary<string, (Pet, int)>>
+    {
+
+    };
+
+}
+
 public class Eggs
 {
     public Dictionary<string, Dictionary<string, double>> eggs = new Dictionary<string, Dictionary<string, double>>
@@ -85,8 +100,12 @@ public class Program
         Eggs eggInstance = new Eggs();
         Player player = new Player();
         //functions
-        Startup(player);
+        ConsoleGame.Startup(player);
     }
+}
+
+public class ConsoleGame
+{
     public static void Startup(Player player)
     {
         Console.WriteLine("Welcome to Console World");
@@ -100,4 +119,36 @@ public class Program
         Console.Write("Enter your username: ");
         player.username = Console.ReadLine();
     }
+    public static void OptionsDisplay(ref int choice)
+    {
+        Console.WriteLine("Here are some of your options:");
+        Console.WriteLine("1 - Go on adventure");
+        Console.WriteLine("2 - Open shop");
+        Console.WriteLine("3 - Exit the game");
+        Console.Write("Enter your choice: ");
+        choice = int.Parse(Console.ReadLine());
+    }
+
+    public static void ActOnChoice(int choice)
+    {
+        switch (choice)
+        {
+            case 1: Console.WriteLine();
+                break;
+            case 2:
+                Console.WriteLine();
+                break;
+            case 3:
+                Console.WriteLine();
+                break;
+
+        }
+    }
+
+    public static void GoOnAdventure()
+    {
+
+    }
+
+
 }
