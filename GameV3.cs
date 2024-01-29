@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;  // Don't forget to add this directive
-using System.ComponentModel.Design;
-using System.Security.Cryptography.X509Certificates;
-using System.Xml.Schema;
+
 public class Player
 {
     public string username { get; set; } = "";
@@ -19,61 +16,63 @@ public class Player
 public class Pet
 {
     public string Name { get; set; }
+
+    public string Rarity { get; set; }
     public double Attack { get; set; }
     public double Health { get; set; }
 
     public class Mobs
     {
-        public Dictionary<string, Dictionary<string, (Pet, int)>> mobs = new Dictionary<string, Dictionary<string, (Pet, int)>>
-        {
-
-        };
-
+        public Dictionary<string, Dictionary<string, (Pet, int)>> mobs = new Dictionary<string, Dictionary<string, (Pet, int)>> { };
     }
 
     public class Eggs
     {
         public Dictionary<string, Dictionary<string, (Pet, int)>> eggs = new Dictionary<string, Dictionary<string, (Pet, int)>>
-    {
+        {
             {
                 "Common Egg", new Dictionary<string, (Pet, int)>
                 {
                     {"Doggy", (new Pet { Name = "Doggy", Attack = 3, Health = 20}, 30)},
-                    {"Cat", (new Pet { Name = "Doggy", Attack = 3, Health = 20}, 30)},
+                    {"Cat", (new Pet { Name = "Cat", Attack = 3, Health = 20}, 30)},
                     {"Bear", (new Pet { Name = "Bear", Attack = 3, Health= 20}, 10)},
-                    
                 }
             }
-    };
+        };
+
+        static Random random = new Random();
 
         public void OpenEgg(string eggname, Player player)
         {
             if (eggs.ContainsKey(eggname))
             {
-                //retrieve data from dictionary
+                // retrieve data from dictionary
                 Dictionary<string, (Pet, int)> eggContents = eggs[eggname];
 
-
-                //Calculate total pet chance
+                // Calculate total pet chance
                 double TotalChance = 0;
-                foreach (var petChance in eggContents.Values)
+                foreach (var petTuple in eggContents.Values)
                 {
+                    double petChance = petTuple.Item2;
                     TotalChance += petChance;
                 }
 
-                //Generates random number and then * it by the totalchance 
-                double randomnumber = new Random().NextDouble() * TotalChance;
+                // Generates random number and then * it by the totalchance 
+                double randomnumber = random.NextDouble() * TotalChance;
 
-                foreach (var Petname in eggContents)
+                foreach (var Petname in eggContents.Values)
                 {
-                    if (randomnumber <= Petname.Value)
+                    if (randomnumber <= Petname.Item2)
                     {
-                        player.AddPet(Petname.Key, player);
-                        Console.WriteLine($"You have hatched {Petname.Key}");
+                        if (Petname.Item1.Rarity == "Secret") {
+
+                        }
+                        player.AddPet(Petname.Item1.Name, player);
+                        Console.WriteLine($"You have hatched {Petname.Item1.Name}");
                         break;
                     }
 
-                    randomnumber -= Petname.Value;
+                    randomnumber -= Petname.Item2;
                 }
             }
             else
@@ -81,18 +80,19 @@ public class Pet
                 Console.WriteLine($"Egg with name '{eggname}' not found.");
             }
         }
-
     }
 
     public class Program
     {
         public static void Main()
         {
-            //class info retrieve
+            // class info retrieve
             Eggs eggInstance = new Eggs();
             Player player = new Player();
-            //functions
+            // functions
             ConsoleGame.Startup(player);
+
+            eggInstance.OpenEgg("Common Egg", player);
         }
     }
 
@@ -134,14 +134,7 @@ public class Pet
                 case 3:
                     Console.WriteLine();
                     break;
-
             }
         }
-
-        public static void GoOnAdventure()
-        {
-
-        }
-
-
     }
+}
