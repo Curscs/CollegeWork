@@ -33,9 +33,9 @@ public class Pet
             {
                 "Common Egg", new Dictionary<string, (Pet, int)>
                 {
-                    {"Doggy", (new Pet { Name = "Doggy", Attack = 3, Health = 20}, 30)},
-                    {"Cat", (new Pet { Name = "Cat", Attack = 3, Health = 20}, 30)},
-                    {"Bear", (new Pet { Name = "Bear", Attack = 3, Health= 20}, 10)},
+                    {"Doggy", (new Pet { Name = "Doggy", Rarity = "Secret", Attack = 3, Health = 20}, 30)},
+                    {"Cat", (new Pet { Name = "Cat", Rarity = "Common", Attack = 3, Health = 20}, 30)},
+                    {"Bear", (new Pet { Name = "Bear", Rarity = "Rare", Attack = 3, Health= 20}, 10)},
                 }
             }
         };
@@ -64,12 +64,21 @@ public class Pet
                 {
                     if (randomnumber <= Petname.Item2)
                     {
-                        if (Petname.Item1.Rarity == "Secret") {
+                        if (Petname.Item1.Rarity == "Secret")
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            player.AddPet(Petname.Item1.Name, player);
+                            Console.WriteLine($"You have hatched {Petname.Item1.Rarity} {Petname.Item1.Name}");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            break;
 
                         }
-                        player.AddPet(Petname.Item1.Name, player);
-                        Console.WriteLine($"You have hatched {Petname.Item1.Name}");
-                        break;
+                        else
+                        {
+                            player.AddPet(Petname.Item1.Name, player);
+                            Console.WriteLine($"You have hatched {Petname.Item1.Rarity} {Petname.Item1.Name}");
+                            break;
+                        }
                     }
 
                     randomnumber -= Petname.Item2;
@@ -92,7 +101,10 @@ public class Pet
             // functions
             ConsoleGame.Startup(player);
 
-            eggInstance.OpenEgg("Common Egg", player);
+            for (int i = 0; i < 30; i++)
+            {
+                eggInstance.OpenEgg("Common Egg", player);
+            }
         }
     }
 
