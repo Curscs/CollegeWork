@@ -9,7 +9,8 @@ public class program
 
         do
         {
-
+            DisplayMenu(ref choice);
+            ActOnChoice(choice, numbers);
         } while (choice != 3);
     }
 
@@ -31,7 +32,7 @@ public class program
                 DisplayAll(numbers);
                 break;
             case 2:
-
+                FindLargest(numbers);
                 break;
         }
     }
@@ -42,7 +43,7 @@ public class program
         {
             Console.Write($"{i},");
         }
-
+        Console.WriteLine(" ");
 
     }
     
