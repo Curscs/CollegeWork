@@ -4,20 +4,59 @@ public class program
 {
     public static void Main()
     {
-        int searchNum = 0;
-        int[] numbers = { 1, 2, 3, 4, 5, };
+        int[] numbers = {232, 241, 324, 216, 221, 298, 334, 212, 235, 324, 264, 141};
+        int choice = 0;
 
-        GetNumber(ref searchNum)
+        do
+        {
+
+        } while (choice != 3);
     }
 
-    public static void GetNumber(ref int searchNum)
+    public static void DisplayMenu(ref int choice)
     {
-        Console.Write("Enter the number you want to check: ");
-        searchNum = int.Parse(Console.ReadLine());
+        Console.WriteLine("Super menu");
+        Console.WriteLine("====================-");
+        Console.WriteLine("1 - Display the array");
+        Console.WriteLine("2 - Find Largest");
+        Console.WriteLine("3 - Exit");
+        choice = int.Parse(Console.ReadLine());
     }
 
-    public static void FindNumber()
+    public static void ActOnChoice(int choice, int[] numbers)
     {
+        switch (choice)
+        {
+            case 1:
+                DisplayAll(numbers);
+                break;
+            case 2:
 
+                break;
+        }
+    }
+
+    public static void DisplayAll(int[] numbers)
+    {
+        foreach (int i in numbers)
+        {
+            Console.Write($"{i},");
+        }
+
+
+    }
+    
+    public static void FindLargest(int[] numbers)
+    {
+        int largest = 0;
+        foreach(int i in numbers)
+        {
+            if (largest < i)
+            {
+                largest = i;
+
+                Console.WriteLine($"The largest number is the array is {largest}");
+            }
+        }
     }
 }
