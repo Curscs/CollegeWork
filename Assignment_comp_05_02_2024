@@ -1,0 +1,23 @@
+using System;
+
+public class program
+{
+    public static void Main()
+    {
+        int searchNum = 0;
+        int[] numbers = { 1, 2, 3, 4, 5, };
+
+        GetNumber(ref searchNum)
+    }
+
+    public static void GetNumber(ref int searchNum)
+    {
+        Console.Write("Enter the number you want to check: ");
+        searchNum = int.Parse(Console.ReadLine());
+    }
+
+    public static void FindNumber()
+    {
+
+    }
+}
